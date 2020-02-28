@@ -7,7 +7,7 @@ use Carp;
 use WebService::SendBird::User;
 
 =head1 NAME
-WebService::SendBird::User
+WebService::SendBird::GroupChat
 =head1 SYNOPSIS
 =head1 DESCRIPTION
 =cut
