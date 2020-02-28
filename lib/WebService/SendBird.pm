@@ -31,17 +31,31 @@ use constant DEFAULT_API_URL_TEMPLATE => 'https://api-%s.sendbird.com/v3';
 sub new {
     my ($cls, %params) = @_;
 
-    Carp::croak('api_token is missed') unless $params{api_token};
-    Carp::croak('app_id or api_url is missed') unless $params{app_id} || $params{api_url};
+    Carp::croak('Missing required argument: api_token') unless $params{api_token};
+    Carp::croak('Missing required argument: app_id or api_url') unless $params{app_id} || $params{api_url};
 
     my $self = +{
         api_token => $params{api_token},
-        $params{app_id} ? (app_id => $params{app_id}) : (),
+        $params{app_id}  ? (app_id  => $params{app_id})                  : (),
         $params{api_url} ? (api_url => Mojo::URL->new($params{api_url})) : (),
+        $params{ua}      ? (ua      => $params{ua})                      : (),
     };
 
     return bless $self, $cls;
 }
+
+
+=head2 app_id
+
+=cut
+
+sub app_id { shift->{app_id} }
+
+=head2 api_token
+
+=cut
+
+sub api_token { shift->{api_token} }
 
 =head2 api_url
 
@@ -50,7 +64,7 @@ sub new {
 sub api_url {
     my $self = shift;
 
-    $self->{api_url} //= Mojo::URL->new(sprintf(DEFAULT_API_URL_TEMPLATE, $self->{app_id}));
+    $self->{api_url} //= Mojo::URL->new(sprintf(DEFAULT_API_URL_TEMPLATE, $self->app_id));
 
     return $self->{api_url};
 }
@@ -61,7 +75,7 @@ sub api_url {
 
 sub ua {
     my $self = shift;
-
+    #TODO Need to add configuration to user agent
     $self->{ua} //= Mojo::UserAgent->new();
 
     return $self->{ua};
@@ -76,7 +90,7 @@ sub http_headers {
 
     return {
         'Content-Type' => 'application/json, charset=utf8',
-        'Api-Token'    => $self->{api_token},
+        'Api-Token'    => $self->api_token,
     }
 }
 
@@ -96,7 +110,7 @@ sub request {
             uc($method) eq 'GET' ? (form => $params) : (json => $params),
         )
     );
-
+    #TODO Improve error handling
     Carp::croak('Fail to make request to SB API') if $resp->result->code !~ /^2\d+/;
 
     my $data = $resp->result->json;
@@ -113,8 +127,8 @@ sub request {
 sub create_user {
     my ($self, %params) = @_;
 
-    Carp::Croak('profile_url is missed') unless exists $params{profile_url};
-    $params{$_} or Carp::Croak('profile_url is missed') for (qw(user_id nickname));
+    Carp::croak('profile_url is missed') unless exists $params{profile_url};
+    $params{$_} or Carp::croak("$_ is missed") for (qw(user_id nickname));
 
     my $resp = $self->request(POST => 'users', \%params);
 
@@ -129,7 +143,7 @@ sub create_user {
 sub view_user {
     my ($self, %params) = @_;
 
-    my $user_id = delete $params{user_id} or Carp::croak('user_is is missed');
+    my $user_id = delete $params{user_id} or Carp::croak('user_id is missed');
 
     my $resp = $self->request(GET => "users/$user_id", \%params);
 
