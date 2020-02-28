@@ -26,6 +26,18 @@ use constant DEFAULT_API_URL_TEMPLATE => 'https://api-%s.sendbird.com/v3';
 
 =head2 new
 
+=over 4
+
+=item * C<api_token> - Master or Secondary API Token.
+
+=item * C<app_id> - Application ID.
+
+=item * C<api_url> - URL to API end point. By default it will be generated from app_id.
+
+=item * C<ua> - Custom http client for API requests, should have the same interface like L<Mojo::UserAgent>.
+
+=back
+
 =cut
 
 sub new {
@@ -47,17 +59,23 @@ sub new {
 
 =head2 app_id
 
+Returns Application ID.
+
 =cut
 
 sub app_id { shift->{app_id} }
 
 =head2 api_token
 
+Returns API Token
+
 =cut
 
 sub api_token { shift->{api_token} }
 
 =head2 api_url
+
+Returns API endpoint url
 
 =cut
 
@@ -71,6 +89,8 @@ sub api_url {
 
 =head2 ua
 
+Return User Agent for http request.
+
 =cut
 
 sub ua {
@@ -82,6 +102,8 @@ sub ua {
 }
 
 =head2 http_headers
+
+Returns headers for API request.
 
 =cut
 
@@ -96,6 +118,8 @@ sub http_headers {
 
 
 =head2 request
+
+
 
 =cut
 
@@ -121,6 +145,17 @@ sub request {
 }
 
 =head2 create_user
+
+Creates user at SendBird
+
+=over 4
+
+=item * C<profile_url>
+=item * C<user_id>
+=item * C<nickname>
+
+=back
+
 
 =cut
 
