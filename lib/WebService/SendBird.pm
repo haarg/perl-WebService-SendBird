@@ -13,7 +13,7 @@ use Carp qw();
 
 our $VERSION = '0.001';
 
-# ABSTRACT: Webservice to connect to SendBird API
+# ABSTRACT: client to work with SendBird API
 
 =head1 NAME
 
