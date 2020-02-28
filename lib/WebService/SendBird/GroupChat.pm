@@ -7,9 +7,24 @@ use Carp;
 use WebService::SendBird::User;
 
 =head1 NAME
-WebService::SendBird::GroupChat
+
+WebService::SendBird::GroupChat - SendBird Group Chat
+
 =head1 SYNOPSIS
+
+ use WebService::SendBird::Group;
+
+ my $chat = WebService::SendBird::User->new(
+     api_client  => $api,
+     channel_url => 'chat_room_1',
+ );
+
+ $chat->update(name => 'Gossips');
+
 =head1 DESCRIPTION
+
+Class for SendBird Group Channel. Information about structure could be found at L<API Documentation|https://docs.sendbird.com/platform/group_channel>
+
 =cut
 
 use constant REQUIRED_FIELDS => qw(
@@ -52,6 +67,16 @@ use constant OPTIONAL_FIELDS => qw(
 
 =head2 new
 
+Creates an instance of SendBird Group Chat
+
+=over 4
+
+=item * C<api_client> - SendBird API client L<WebService::SendBird>.
+
+=item * C<channel_url> - Unique Channel Identifier
+
+=back
+
 =cut
 
 sub new {
@@ -69,7 +94,69 @@ sub new {
     return bless $self, $cls;
 }
 
+=head2 Getters
+
+=over 4
+
+=item * C<api_client>
+
+=item * C<channel_url>
+
+=item * C<is_broadcast>
+
+=item * C<name>
+
+=item * C<is_access_code_required>
+
+=item * C<is_super>
+
+=item * C<joined_member_count>
+
+=item * C<is_public>
+
+=item * C<cover_url>
+
+=item * C<unread_mention_count>
+
+=item * C<is_created>
+
+=item * C<is_distinct>
+
+=item * C<is_ephemeral>
+
+=item * C<freeze>
+
+=item * C<data>
+
+=item * C<is_discoverable>
+
+=item * C<last_message>
+
+=item * C<sms_fallback_interval_sec>
+
+=item * C<custom_type>
+
+=item * C<unread_message_count>
+
+=item * C<created_at>
+
+=item * C<member_count>
+
+=item * C<sms_fallback_enabled>
+
+=item * C<max_length_message>
+
+=item * C<members>
+
+=back
+
+=cut
+
 =head2 update
+
+Updates the group channel at SendBird API
+
+Information about parameters could be found at L<API Documentation|https://docs.sendbird.com/platform/group_channel#3_update_a_channel>
 
 =cut
 
@@ -82,6 +169,5 @@ sub update {
 
     return $self
 }
-
 
 1;
