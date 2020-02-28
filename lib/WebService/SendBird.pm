@@ -52,6 +52,8 @@ use constant DEFAULT_API_URL_TEMPLATE => 'https://api-%s.sendbird.com/v3';
 
 =head2 new
 
+Creates an instance of API client
+
 =over 4
 
 =item * C<api_token> - Master or Secondary API Token.
@@ -65,6 +67,7 @@ use constant DEFAULT_API_URL_TEMPLATE => 'https://api-%s.sendbird.com/v3';
 =back
 
 =cut
+
 
 sub new {
     my ($cls, %params) = @_;

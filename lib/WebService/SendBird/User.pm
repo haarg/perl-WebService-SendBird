@@ -7,9 +7,26 @@ use Carp;
 use JSON::PP;
 
 =head1 NAME
-WebService::SendBird::User
+
+WebService::SendBird::User - SendBird User
+
 =head1 SYNOPSIS
+
+ use WebService::SendBird::User;
+
+ my $user = WebService::SendBird::User->new(
+     api_client => $api,
+     user_id    => 'my_chat_user_1',
+ );
+
+ $user->update(nickname => 'cucumber');
+
+ my $token_data = $user->issue_session_token;
+
 =head1 DESCRIPTION
+
+Class for SendBird User. Information about structure could be found at L<API Documentation|https://docs.sendbird.com/platform/user>
+
 =cut
 
 use constant REQUIRED_FIELDS => qw(
@@ -39,6 +56,16 @@ use constant OPTIONAL_FIELDS => qw(
 
 =head2 new
 
+Creates an instance of SendBird User
+
+=over 4
+
+=item * C<api_client> - SendBird API client L<WebService::SendBird>.
+
+=item * C<user_id> - Unique User Identifier
+
+=back
+
 =cut
 
 sub new {
@@ -52,7 +79,43 @@ sub new {
     return bless $self, $cls;
 }
 
+=head2 Getters
+
+=over 4
+
+=item * C<api_client>
+
+=item * C<user_id>
+
+=item * C<phone_number>
+
+=item * C<has_ever_logged_in>
+
+=item * C<session_tokens>
+
+=item * C<access_token>
+
+=item * C<discovery_keys>
+
+=item * C<is_online>
+
+=item * C<last_seen_at>
+
+=item * C<nickname>
+
+=item * C<profile_url>
+
+=item * C<metadata>
+
+=back
+
+=cut
+
 =head2 update
+
+Updates the user at SendBird API
+
+Information about parameters could be found at L<API Documentation|https://docs.sendbird.com/platform/user#3_update_a_user>
 
 =cut
 
@@ -67,6 +130,8 @@ sub update {
 }
 
 =head2 issue_session_token
+
+Issues new session token and returns hash ref with token and expiration time of this token.
 
 =cut
 
