@@ -74,9 +74,9 @@ sub new {
 
     my $self = +{
         api_token => $params{api_token},
+        $params{ua}      ? (ua      => $params{ua})                      : (),
         $params{app_id}  ? (app_id  => $params{app_id})                  : (),
         $params{api_url} ? (api_url => Mojo::URL->new($params{api_url})) : (),
-        $params{ua}      ? (ua      => $params{ua})                      : (),
     };
 
     return bless $self, $cls;
