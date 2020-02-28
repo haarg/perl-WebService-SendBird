@@ -47,6 +47,7 @@ More information at L<Platform API Documentation|https://docs.sendbird.com/platf
 =cut
 
 use constant DEFAULT_API_URL_TEMPLATE => 'https://api-%s.sendbird.com/v3';
+use constant DEFAULT_REQUEST_TIMEOUT  => 15;
 
 =head1 METHODS
 
@@ -63,6 +64,8 @@ Creates an instance of API client
 =item * C<api_url> - URL to API end point. By default it will be generated from app_id.
 
 =item * C<ua> - Custom http client for API requests, should have the same interface like L<Mojo::UserAgent>.
+
+=item * C<timeout> - request timeout, default value 15 seconds
 
 =back
 
@@ -116,6 +119,14 @@ sub api_url {
     return $self->{api_url};
 }
 
+=head2 timeout
+
+Return http request timeout value.
+
+=cut
+
+sub timeout { shift->{timeout} }
+
 =head2 ua
 
 Return User Agent for http request.
@@ -124,9 +135,16 @@ Return User Agent for http request.
 
 sub ua {
     my $self = shift;
-    #TODO Need to add configuration to user agent
-    $self->{ua} //= Mojo::UserAgent->new();
 
+    return $self->{ua} if $self->{ua};
+
+    my $ua = Mojo::UserAgent->new();
+
+    $ua->inactivity_timeout($self->timeout || DEFAULT_REQUEST_TIMEOUT);
+    $ua->proxy->detect;
+    $ua->max_connections(100);
+
+    $self->{ua} = $ua;
     return $self->{ua};
 }
 
