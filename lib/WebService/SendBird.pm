@@ -32,7 +32,7 @@ WebService::SendBird - unofficial support for the Sendbird API
      user_id     => 'my_chat_user_1',
      nickname    => 'pumpkin',
      profile_url => undef,
- )
+ );
 
  my $chat = $api->create_group_chat(
      user_ids => [ $user->user_id ],
