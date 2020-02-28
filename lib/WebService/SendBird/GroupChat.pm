@@ -6,6 +6,12 @@ use warnings;
 use Carp;
 use WebService::SendBird::User;
 
+=head1 NAME
+WebService::SendBird::User
+=head1 SYNOPSIS
+=head1 DESCRIPTION
+=cut
+
 use constant REQUIRED_FIELDS => qw(
     api_client
     channel_url
@@ -44,6 +50,10 @@ use constant OPTIONAL_FIELDS => qw(
     }
 }
 
+=head2 new
+
+=cut
+
 sub new {
     my ($cls, %params) = @_;
 
@@ -59,6 +69,9 @@ sub new {
     return bless $self, $cls;
 }
 
+=head2 update
+
+=cut
 
 sub update {
     my ($self, %params) = @_;

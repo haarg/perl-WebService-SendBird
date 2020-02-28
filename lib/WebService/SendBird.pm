@@ -11,8 +11,22 @@ use WebService::SendBird::GroupChat;
 
 use Carp qw();
 
+our $VERSION = '0.001';
+
+# ABSTRACT: Webservice to connect to SendBird API
+
+=head1 NAME
+WebService::SendBird - unofficial support for the Sendbird Api
+=head1 SYNOPSIS
+=head1 DESCRIPTION
+=cut
 
 use constant DEFAULT_API_URL_TEMPLATE => 'https://api-%s.sendbird.com/v3';
+
+
+=head2 new
+
+=cut
 
 sub new {
     my ($cls, %params) = @_;
@@ -29,6 +43,10 @@ sub new {
     return bless $self, $cls;
 }
 
+=head2 api_url
+
+=cut
+
 sub api_url {
     my $self = shift;
 
@@ -37,6 +55,10 @@ sub api_url {
     return $self->{api_url};
 }
 
+=head2 ua
+
+=cut
+
 sub ua {
     my $self = shift;
 
@@ -44,6 +66,10 @@ sub ua {
 
     return $self->{ua};
 }
+
+=head2 http_headers
+
+=cut
 
 sub http_headers {
     my $self = shift;
@@ -55,6 +81,9 @@ sub http_headers {
 }
 
 
+=head2 request
+
+=cut
 
 sub request {
     my ($self, $method, $path, $params) = @_;
@@ -77,11 +106,9 @@ sub request {
     return $data;
 }
 
-sub _url_for {
-    my ($self, $path) = @_;
+=head2 create_user
 
-    return join q{/} => ($self->api_url, $path);
-}
+=cut
 
 sub create_user {
     my ($self, %params) = @_;
@@ -95,6 +122,10 @@ sub create_user {
 }
 
 
+=head2 view_user
+
+=cut
+
 sub view_user {
     my ($self, %params) = @_;
 
@@ -105,6 +136,9 @@ sub view_user {
     return WebService::SendBird::User->new(%$resp, api_client => $self);
 }
 
+=head2 create_group_chat
+
+=cut
 
 sub create_group_chat {
     my ($self, %params) = @_;
@@ -114,6 +148,11 @@ sub create_group_chat {
     return WebService::SendBird::GroupChat->new(%$resp, api_client => $self);
 }
 
+
+=head2 view_group_chat
+
+=cut
+
 sub view_group_chat {
     my ($self, %params) = @_;
     my $channel_url = delete $params{channel_url} or Carp::croak('channel_url is missed');
@@ -121,6 +160,12 @@ sub view_group_chat {
     my $resp = $self->request(GET => "group_channels/$channel_url", \%params);
 
     return WebService::SendBird::GroupChat->new(%$resp, api_client => $self);
+}
+
+sub _url_for {
+    my ($self, $path) = @_;
+
+    return join q{/} => ($self->api_url, $path);
 }
 
 
