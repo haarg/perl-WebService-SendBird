@@ -16,13 +16,39 @@ our $VERSION = '0.001';
 # ABSTRACT: Webservice to connect to SendBird API
 
 =head1 NAME
-WebService::SendBird - unofficial support for the Sendbird Api
+
+WebService::SendBird - unofficial support for the Sendbird API
+
 =head1 SYNOPSIS
+
+ use WebService::SendBird;
+
+ my $api = WebService::SendBird->new(
+     api_token => 'You_Api_Token_Here',
+     app_id    => 'You_App_ID_Here',
+ );
+
+ my $user = $api->create_user(
+     user_id     => 'my_chat_user_1',
+     nickname    => 'pumpkin',
+     profile_url => undef,
+ )
+
+ my $chat = $api->create_group_chat(
+     user_ids => [ $user->user_id ],
+ );
+
 =head1 DESCRIPTION
+
+Basic implementation for SendBird Platform API client, which helps to create users and group chats.
+
+More information at L<Platform API Documentation|https://docs.sendbird.com/platform>
+
 =cut
 
 use constant DEFAULT_API_URL_TEMPLATE => 'https://api-%s.sendbird.com/v3';
 
+=head1 METHODS
 
 =head2 new
 
@@ -119,7 +145,7 @@ sub http_headers {
 
 =head2 request
 
-
+Sends request to Sendbird API
 
 =cut
 
@@ -146,16 +172,21 @@ sub request {
 
 =head2 create_user
 
-Creates user at SendBird
+Creates a user at SendBird
 
 =over 4
 
-=item * C<profile_url>
-=item * C<user_id>
-=item * C<nickname>
+=item * C<user_id> - Unique User Identifier
+
+=item * C<nickname> - User nickname
+
+=item * C<profile_url> - user profile url. Could be C<undef> or empty.
 
 =back
 
+Information about extra parameters could be found at L<API Documentation|https://docs.sendbird.com/platform/user#3_create_a_user>
+
+Method returns an instance of L<WebService::SendBird::User>
 
 =cut
 
@@ -173,6 +204,18 @@ sub create_user {
 
 =head2 view_user
 
+Gets information about a user from SendBird
+
+=over 4
+
+=item * C<user_id> - Unique User Identifier
+
+=back
+
+Information about extra parameters could be found at L<API Documentation|https://docs.sendbird.com/platform/user#3_view_a_user>
+
+Method returns an instance of L<WebService::SendBird::User>
+
 =cut
 
 sub view_user {
@@ -187,6 +230,12 @@ sub view_user {
 
 =head2 create_group_chat
 
+Creates a group chat room
+
+Information about parameters could be found at L<API Documentation|https://docs.sendbird.com/platform/group_channel#3_create_a_channel>
+
+Method returns an instance of L<WebService::SendBird::GroupChat>
+
 =cut
 
 sub create_group_chat {
@@ -200,6 +249,18 @@ sub create_group_chat {
 
 =head2 view_group_chat
 
+Gets information about a group chat from SendBird
+
+=over 4
+
+=item * C<channel_url> - Unique Chat Identifier
+
+=back
+
+Information about parameters could be found at L<API Documentation|https://docs.sendbird.com/platform/group_channel#3_view_a_channel>
+
+Method returns an instance of L<WebService::SendBird::GroupChat>
+
 =cut
 
 sub view_group_chat {
@@ -211,6 +272,9 @@ sub view_group_chat {
     return WebService::SendBird::GroupChat->new(%$resp, api_client => $self);
 }
 
+#Privat methods
+
+#Returns full URL for requested path
 sub _url_for {
     my ($self, $path) = @_;
 
