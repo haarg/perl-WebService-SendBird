@@ -125,7 +125,7 @@ Return http request timeout value.
 
 =cut
 
-sub timeout { shift->{timeout} }
+sub timeout { shift->{timeout} || DEFAULT_REQUEST_TIMEOUT }
 
 =head2 ua
 
@@ -140,9 +140,8 @@ sub ua {
 
     my $ua = Mojo::UserAgent->new();
 
-    $ua->inactivity_timeout($self->timeout || DEFAULT_REQUEST_TIMEOUT);
+    $ua->inactivity_timeout($self->timeout);
     $ua->proxy->detect;
-    $ua->max_connections(100);
 
     $self->{ua} = $ua;
     return $self->{ua};
