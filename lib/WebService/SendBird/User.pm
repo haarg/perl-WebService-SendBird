@@ -126,7 +126,7 @@ sub update {
 
     $self->{$_} = $res->{$_} for qw(OPTIONAL_FIELDS);
 
-    return $self
+    return $self;
 }
 
 =head2 issue_session_token
