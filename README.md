@@ -10,8 +10,8 @@ Documentation for SendBird platform API could be found at [here](https://docs.se
 use WebService::SendBird;
 
 my $api = WebService::SendBird->new(
-    api_token => 'You_Api_Token_Here',
-    app_id    => 'You_App_ID_Here',
+    api_token => 'Your_Api_Token_Here',
+    app_id    => 'Your_App_ID_Here',
 );
 
 my $user = $api->create_user(
@@ -24,5 +24,4 @@ my $chat = $api->create_group_chat(
     user_ids => [ $user->user_id ],
 );
 ```
-
 
