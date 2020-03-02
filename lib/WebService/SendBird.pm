@@ -293,7 +293,7 @@ sub view_group_chat {
     return WebService::SendBird::GroupChat->new(%$resp, api_client => $self);
 }
 
-#Privat methods
+#Private methods
 
 #Returns full URL for requested path
 sub _url_for {
