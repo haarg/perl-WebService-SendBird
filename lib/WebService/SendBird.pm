@@ -59,7 +59,7 @@ Creates an instance of API client
 
 =item * C<api_token> - Master or Secondary API Token.
 
-=item * C<app_id> - Application ID.
+=item * C<app_id> - Sendbird Application ID.
 
 =item * C<api_url> - URL to API end point. By default it will be generated from app_id.
 
