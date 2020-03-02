@@ -180,10 +180,15 @@ sub request {
             uc($method) eq 'GET' ? (form => $params) : (json => $params),
         )
     );
-    #TODO Improve error handling
     Carp::croak('Fail to make request to SB API') if $resp->result->code !~ /^2\d+/;
 
-    my $data = $resp->result->json;
+    my $data;
+    eval {
+        $data = $resp->result->json;
+        1;
+    } or do {
+        Carp::croak('Fail to parse response from SB API: ' . $@);
+    };
 
     Carp::croak('Fail to make request to SB API: ' . $data->{message}) if $data->{error};
 
