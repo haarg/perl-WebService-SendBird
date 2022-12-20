@@ -4,7 +4,10 @@ use strict;
 use warnings;
 
 use Carp;
+use JSON::MaybeXS ();
 use WebService::SendBird::User;
+
+## VERSION
 
 =head1 NAME
 
@@ -181,12 +184,12 @@ See L<https://sendbird.com/docs/chat/v3/platform-api/guides/group-channel#2-free
 sub set_freeze {
     my ($self, $freeze) = @_;
     
-    $freeze = $freeze ? \1 : \0;
+    $freeze = $freeze ? JSON::MaybeXS::true : JSON::MaybeXS::false;
 
     my $res = $self->api_client->request(PUT => 'group_channels/' . $self->channel_url. '/freeze', { freeze => $freeze } );
 
     $self->{freeze} = $res->{freeze};
-
+	print STDERR "freeze in set_freeze is $res->{freeze}\n";
     return $self
 }
 
